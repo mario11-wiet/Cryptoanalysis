@@ -1,6 +1,6 @@
 import random
 
-from rule.rule import PasswordRules
+from passwordGenerator.rule.rule import PasswordRules
 
 
 class CompositeCombination:
