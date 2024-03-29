@@ -1,6 +1,6 @@
 import random
 
-from passwordGenerator.rule.rule import PasswordRules
+from Algorithm.rule.rule import PasswordRules
 
 
 class SelectiveCombination:
