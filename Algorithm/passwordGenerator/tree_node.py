@@ -11,7 +11,7 @@ class TreeNode:
         self.difference_metric = 0
         self.level = 0 if not self.parent else self.parent.level + 1
 
-    def uplay_rules(self):
+    def upload_rules(self):
         for rule in self.used_rules:
             self.current_word = rule.execute(self.current_word)
 

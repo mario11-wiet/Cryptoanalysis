@@ -21,6 +21,10 @@ class PasswordRules:
             ReplaceSpacesRule()
         ]
 
+    def sort_rules(self):
+        sorted_rules = sorted(self.rules, key=lambda rule: rule.weight / rule.counter)
+        return sorted_rules
+
 class PasswordRule:
     def __init__(self, weight=1):
         self.weight = weight
@@ -33,6 +37,12 @@ class PasswordRule:
             self.rules[rule] = 1
         else:
             self.rules[rule] += 1
+
+    def most_common_rules(self, number):
+        sorted_rules = sorted(self.rules.items(), key=lambda x: x[1], reverse=True)
+        best_rules = sorted_rules[:number]
+        return best_rules
+
 
     def execute(self, word):
         self.counter += 1

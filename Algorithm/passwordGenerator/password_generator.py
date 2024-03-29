@@ -35,6 +35,7 @@ class PasswordGenerator:
         self.percentage_of_candidates = percentage_of_candidates
         self.password_rules = PasswordRules()
 
+#ptopa
     def execute_algorithm(self):
         self.initialize()
 
@@ -57,23 +58,14 @@ class PasswordGenerator:
 
         self.create_tree(candidates)
 
-        # Krok 2: Dynamiczna modyfikacja hierarchiczna
-        self.adaptive_hierarchical_adjustment()
+        self.clean()
 
-        # Krok 3: Równoległa transformacja
-        self.parallel_transformation()
+    def clean(self):
+        for rule in self.password_rules.rules:
+            rule.weight = 0
+            rule.counter = 0
+            rule.rules = {}
 
-        # Krok 4: Selektywne stosowanie
-        self.selective_application()
-
-        # Krok 5: Iteracyjne wzmacnianie
-        self.iterative_reinforcement()
-
-        # Krok 6: Generowanie złożonych reguł
-        self.composite_rule_generation()
-
-        # Krok 7: Rozszerzenie drzewa
-        self.tree_expansion()
 
     def check_candidate(self, step):
         all_candidates = find_nodes_at_level(self.tree,step)
@@ -103,20 +95,41 @@ class PasswordGenerator:
 
     def create_first_nodes(self):
         for _ in range(self.size_of_level):
-            num_rules = random.randint(min_rule, max_rule)
-            selected_rules = random.sample(self.password_rules.rules, num_rules)
-
-            new_child = TreeNode(self.tree.initial_word,self.tree,selected_rules)
-            new_child.uplay_rules()
-            self.tree.add_child(new_child)
+            selected_rules = self.selected_rules()
+            self.create_children(self.tree.initial_word,self.tree, selected_rules)
 
     def create_nodes(self, candidates):
-
         for candidate in candidates:
-            for _ in range(self.size_of_level):
-                pass
+            created_rules = self.create_best_rules(math.ceil(self.size_of_level/2))
+            for node in range(math.ceil(self.size_of_level/2)):
+                self.create_children(self.tree.initial_word, candidate, created_rules[node])
+            for _ in range(math.floor(self.size_of_level/2)):
+                selected_rules = self.selected_rules()
+                self.create_children(self.tree.initial_word,candidate,selected_rules)
 
-        pass
+    def create_children(self, initial_word, parent, selected_rules):
+        new_child = TreeNode(initial_word, parent, selected_rules)
+        new_child.upload_rules()
+        parent.add_child(new_child)
+
+    def selected_rules(self):
+        num_rules = random.randint(min_rule, max_rule)
+        selected_rules = random.sample(self.password_rules.rules, num_rules)
+        return selected_rules
+
+    def create_best_rules(self, number):
+        created_rules = []
+        sorted_rules = self.password_rules.sort_rules()
+        for sorted_rule in sorted_rules:
+            num_rules = random.randint(min_rule, max_rule)
+            if num_rules == 1:
+                created_rules.append(sorted_rule)
+            else:
+                rules = [sorted_rule] + sorted_rule.most_common_rules()
+                created_rules.append(rules)
+            if len(created_rules) > number:
+                break
+        return created_rules
 
     def create_node(self, candidate):
         pass
