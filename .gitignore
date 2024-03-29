@@ -159,9 +159,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-passwordGenerator/backend/demo.py
+Algorithm/backend/demo.py
 
-passwordGenerator/backend/concept.py
+Algorithm/backend/concept.py
 
 .idea/
 
