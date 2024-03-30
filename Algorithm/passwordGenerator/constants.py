@@ -1,2 +1,3 @@
-min_rule = 1
-max_rule = 3
+MIN_RULE = 1
+MAX_RULE = 3
+MAX_LENGTH = 15
