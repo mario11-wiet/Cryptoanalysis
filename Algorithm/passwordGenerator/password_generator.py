@@ -40,7 +40,6 @@ class PasswordGenerator:
         self.initialize()
 
         for step in range(self.num_levels):
-            print(step)
             self.one_step(step)
             self.current_level += 1
 
@@ -147,11 +146,18 @@ class PasswordGenerator:
 
     @staticmethod
     def password_candidate_selection(candidates):
-        password_candidate = []
-        candidates.sort(key=lambda x: x.difference_metric*x.strength_metric,reverse=True)
-        for candidate in candidates:
-            password_candidate.append(candidate.current_word) #, candidate.difference_metric, candidate.strength_metric, candidate.used_rules_from_node
+        password_candidates = {}
 
-        print(f"{len(candidates)}, {len(password_candidate)}")
-        return password_candidate
+        for candidate in candidates:
+            password_data = {
+                "password": candidate.current_word,
+                "difference_metric": round(candidate.difference_metric, 2),
+                "strength_metric": round(candidate.strength_metric, 2),
+                "password_value": round(candidate.difference_metric * candidate.strength_metric, 2)
+            }
+            password_candidates[candidate.current_word] = password_data
+
+        return list(password_candidates.values())
+
+
 
